@@ -1,0 +1,60 @@
+channels:
+  - name: Citizen TV Kenya
+    niche: news
+    country: KE
+    youtube_handle: "@kenyacitizentv"
+    channel_id: UChBQgieUidXV1CmDxSdRm3g
+
+  - name: NTV Kenya
+    niche: news
+    country: KE
+    youtube_handle: "@ntvkenyaonline"
+    channel_id: UCqBJ47FjJcl61fmSbcadAVg
+
+  - name: KTN News
+    niche: news
+    country: KE
+    youtube_handle: "@ktnnews_kenya"
+    channel_id: UCKVsdeoHExltrWMuK0hOWmg
+
+  - name: Churchill Show
+    niche: entertainment
+    country: KE
+    youtube_handle: "@churchilltelevision"
+    channel_id: UC0YG5UA1s2gLb5tDfUCIWtg
+
+  - name: Jalango TV
+    niche: entertainment
+    country: KE
+    youtube_handle: "@jalangotv1447"
+    channel_id: UCFG1zHs55s1my124O3Nk9DQ
+
+  - name: Oga Obinna
+    niche: entertainment
+    country: KE
+    youtube_handle: "@obinnatvofficial"
+    channel_id: UCe68ABxGwMZO3J8y_gerZ6A
+
+  - name: Churchill Raw
+    niche: entertainment
+    country: KE
+    youtube_handle: "@churchilltelevision"
+    channel_id: UC0YG5UA1s2gLb5tDfUCIWtg
+
+  - name: Switch TV Kenya
+    niche: entertainment
+    country: KE
+    youtube_handle: "@switchtvkenya"
+    channel_id: UCUhrpGr_luwUzVaxiW5Jkhw
+  
+  - name: KBC Channel 1
+    niche: news
+    country: KE 
+    youtube_handle: "@kbcchannel1news"
+    channel_id: UCypNjM5hP1qcUqQZe57jNfg
+
+  - name: Willy Paul
+    niche: music
+    country: KE
+    youtube_handle: "@willypaulmsafi"
+    channel_id: UCgdVgtJQXxebSiSAzlhYczw
