@@ -46,3 +46,18 @@ Run the first API test:
 cd ingestion
 python test_single_channel.py
 ```
+
+## Run Channel Stats Ingestion
+
+Fetch raw channel statistics for all configured channels:
+
+```bash
+cd ingestion
+python extract_channel_stats.py
+```
+
+This writes raw JSON to:
+
+```text
+data/raw/channel_stats/snapshot_date=YYYY-MM-DD/channel_stats.json
+```
