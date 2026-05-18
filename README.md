@@ -61,3 +61,20 @@ This writes raw JSON to:
 ```text
 data/raw/channel_stats/snapshot_date=YYYY-MM-DD/channel_stats.json
 ```
+
+## Run Limited Video Metadata Ingestion
+
+Fetch recent video metadata for all configured channels:
+
+```bash
+cd ingestion
+python extract_video_metadata.py
+```
+
+The current script fetches up to 25 recent videos per channel to keep API quota usage low during development.
+
+This writes raw JSON to:
+
+```text
+data/raw/videos/snapshot_date=YYYY-MM-DD/videos.json
+```

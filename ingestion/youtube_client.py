@@ -41,3 +41,25 @@ class YouTubeClient:
             .get("relatedPlaylists", {})
             .get("uploads")
         )
+    
+    def get_playlist_items(
+        self,
+        playlist_id: str,
+        page_token: str | None = None,
+        max_results: int = 50,
+    ) -> dict:
+        request = self.client.playlistItems().list(
+            part="snippet,contentDetails",
+            playlistId=playlist_id,
+            maxResults=max_results,
+            pageToken=page_token,
+        )
+        return request.execute()
+
+    def get_videos_by_ids(self, video_ids: list[str]) -> dict:
+        request = self.client.videos().list(
+            part="snippet,contentDetails,statistics",
+            id=",".join(video_ids),
+            maxResults=50,
+        )
+        return request.execute()
