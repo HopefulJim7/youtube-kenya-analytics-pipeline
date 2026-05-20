@@ -78,3 +78,25 @@ This writes raw JSON to:
 ```text
 data/raw/videos/snapshot_date=YYYY-MM-DD/videos.json
 ```
+
+## Flatten Channel Stats
+
+Convert raw channel statistics JSON into a processed CSV:
+
+```bash
+python processing/flatten_channel_stats.py
+```
+
+By default, the script uses today's snapshot if available. If today's raw snapshot does not exist, it uses the latest available snapshot.
+
+To process a specific snapshot date:
+
+```bash
+python processing/flatten_channel_stats.py --snapshot-date 2026-05-18
+```
+
+This writes processed CSV output to:
+
+```text
+data/processed/channel_stats/snapshot_date=YYYY-MM-DD/channel_stats.csv
+```
