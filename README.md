@@ -38,6 +38,11 @@ YOUTUBE_API_KEY=your_real_api_key_here
 RAW_BUCKET_NAME=youtube-kenya-analytics
 RAW_STORAGE_BACKEND=local
 RAW_LOCAL_DIR=data/raw
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5433
+POSTGRES_DB=youtube_analytics
+POSTGRES_USER=youtube_user
+POSTGRES_PASSWORD=youtube_password
 ```
 
 Run the first API test:
@@ -121,4 +126,53 @@ This writes processed CSV output to:
 
 ```text
 data/processed/videos/snapshot_date=YYYY-MM-DD/videos.csv
+```
+
+## Start PostgreSQL
+
+Start the project PostgreSQL database with Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+The database is exposed to your host machine on port `5433` to avoid conflicts with a local PostgreSQL installation.
+
+Connection settings:
+
+```text
+host: localhost
+port: 5433
+database: youtube_analytics
+user: youtube_user
+password: youtube_password
+```
+
+Check the container:
+
+```bash
+docker ps
+```
+
+## Load Processed CSVs To PostgreSQL
+
+Create the raw database tables and load processed CSV files:
+
+```bash
+python loading/load_processed_csv_to_postgres.py
+```
+
+The loader deletes existing rows for the same `snapshot_date` before inserting, so rerunning it does not duplicate rows.
+
+Verify row counts:
+
+```bash
+docker exec youtube_analytics_postgres psql -U youtube_user -d youtube_analytics -c "SELECT 'raw_channel_stats' AS table_name, COUNT(*) FROM raw_channel_stats UNION ALL SELECT 'raw_video_metadata', COUNT(*) FROM raw_video_metadata;"
+```
+
+Expected development output:
+
+```text
+raw_channel_stats  | 10
+raw_video_metadata | 250
 ```
