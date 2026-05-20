@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: dim_channel
+    description: One row per YouTube channel using the latest available channel snapshot.
+    columns:
+      - name: channel_id
+        tests:
+          - not_null
+          - unique
+
+      - name: channel_title
+        tests:
+          - not_null
+
+  - name: dim_video
+    description: One row per YouTube video using the latest available video snapshot.
+    columns:
+      - name: video_id
+        tests:
+          - not_null
+          - unique
+
+      - name: channel_id
+        tests:
+          - not_null
+
+      - name: video_title
+        tests:
+          - not_null
+
+  - name: fact_channel_stats
+    description: Channel-level snapshot facts for subscriber count, total views, and video count.
+    columns:
+      - name: snapshot_date
+        tests:
+          - not_null
+
+      - name: channel_id
+        tests:
+          - not_null
+
+      - name: subscriber_count
+        tests:
+          - not_null
+
+      - name: view_count
+        tests:
+          - not_null
+
+      - name: video_count
+        tests:
+          - not_null
+
+  - name: fact_video_performance
+    description: Video-level snapshot facts for views, likes, and comments.
+    columns:
+      - name: snapshot_date
+        tests:
+          - not_null
+
+      - name: video_id
+        tests:
+          - not_null
+
+      - name: channel_id
+        tests:
+          - not_null
+
+      - name: view_count
+        tests:
+          - not_null

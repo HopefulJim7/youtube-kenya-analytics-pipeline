@@ -218,3 +218,33 @@ Expected development row counts:
 stg_youtube__channel_stats | 10
 stg_youtube__videos        | 250
 ```
+
+## dbt Mart Models
+
+The mart layer builds analytics-ready views from the staging models:
+
+```text
+dim_channel
+dim_video
+fact_channel_stats
+fact_video_performance
+```
+
+Run the full dbt build:
+
+```bash
+cd dbt_youtube_analytics
+..\.venv312\Scripts\dbt.exe run
+..\.venv312\Scripts\dbt.exe test
+```
+
+Expected development row counts:
+
+```text
+dim_channel            | 9
+dim_video              | 225
+fact_channel_stats     | 10
+fact_video_performance | 250
+```
+
+`dim_channel` has 9 rows because `Churchill Show` and `Churchill Raw` currently resolve to the same YouTube channel ID. This can be refined later by treating Churchill Raw as a playlist or content category rather than a separate channel.
