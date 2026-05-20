@@ -2,10 +2,15 @@
 __pycache__/
 *.pyc
 .venv/
+.venv*/
 venv/
+venv*/
 
 data/
 logs/
+dbt_youtube_analytics/logs/
+dbt_youtube_analytics/target/
+dbt_youtube_analytics/dbt_packages/
 
 .ipynb_checkpoints/
 .DS_Store

@@ -1,0 +1,12 @@
+youtube_kenya_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5433
+      user: youtube_user
+      password: youtube_password
+      dbname: youtube_analytics
+      schema: public
+      threads: 4

@@ -2,4 +2,8 @@ google-api-python-client==2.169.0
 python-dotenv==1.0.1
 PyYAML==6.0.2
 pandas==3.0.3
+
 psycopg[binary]==3.3.4
+
+dbt-core==1.10.22
+dbt-postgres==1.10.0

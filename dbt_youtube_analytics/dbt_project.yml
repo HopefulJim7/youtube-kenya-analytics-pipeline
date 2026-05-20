@@ -1,0 +1,20 @@
+name: youtube_kenya_analytics
+version: "1.0.0"
+config-version: 2
+
+profile: youtube_kenya_analytics
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  youtube_kenya_analytics:
+    staging:
+      +materialized: view

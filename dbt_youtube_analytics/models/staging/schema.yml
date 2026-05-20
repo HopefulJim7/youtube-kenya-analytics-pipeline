@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_youtube__channel_stats
+    description: Cleaned staging model for YouTube channel-level snapshot statistics.
+    columns:
+      - name: snapshot_date
+        tests:
+          - not_null
+
+      - name: channel_id
+        tests:
+          - not_null
+
+      - name: configured_name
+        tests:
+          - not_null
+
+      - name: subscriber_count
+        tests:
+          - not_null
+
+      - name: view_count
+        tests:
+          - not_null
+
+      - name: video_count
+        tests:
+          - not_null
+
+  - name: stg_youtube__videos
+    description: Cleaned staging model for YouTube video metadata and engagement statistics.
+    columns:
+      - name: snapshot_date
+        tests:
+          - not_null
+
+      - name: channel_id
+        tests:
+          - not_null
+
+      - name: video_id
+        tests:
+          - not_null
+
+      - name: video_title
+        tests:
+          - not_null
+
+      - name: published_at
+        tests:
+          - not_null
+
+      - name: view_count
+        tests:
+          - not_null

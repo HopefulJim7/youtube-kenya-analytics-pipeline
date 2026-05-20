@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: youtube_raw
+    database: youtube_analytics
+    schema: public
+    tables:
+      - name: raw_channel_stats
+      - name: raw_video_metadata

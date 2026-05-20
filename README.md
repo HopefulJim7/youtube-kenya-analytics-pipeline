@@ -176,3 +176,45 @@ Expected development output:
 raw_channel_stats  | 10
 raw_video_metadata | 250
 ```
+
+## Run dbt Staging Models
+
+dbt currently runs from a Python 3.12 virtual environment because dbt dependencies are more stable there than on Python 3.14.
+
+Create the Python 3.12 dbt environment:
+
+```bash
+py -3.12 -m venv .venv312
+.venv312\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Copy the dbt profile example to your local dbt profile folder:
+
+```bash
+mkdir $HOME\.dbt
+Copy-Item .\dbt_youtube_analytics\profiles.yml.example $HOME\.dbt\profiles.yml
+```
+
+Run dbt from the dbt project folder:
+
+```bash
+cd dbt_youtube_analytics
+..\.venv312\Scripts\dbt.exe debug
+..\.venv312\Scripts\dbt.exe run
+..\.venv312\Scripts\dbt.exe test
+```
+
+The staging layer creates:
+
+```text
+stg_youtube__channel_stats
+stg_youtube__videos
+```
+
+Expected development row counts:
+
+```text
+stg_youtube__channel_stats | 10
+stg_youtube__videos        | 250
+```
