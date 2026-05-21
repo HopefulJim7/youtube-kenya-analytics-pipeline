@@ -8,6 +8,7 @@ venv*/
 
 data/
 logs/
+airflow/logs/
 dbt_youtube_analytics/logs/
 dbt_youtube_analytics/target/
 dbt_youtube_analytics/dbt_packages/

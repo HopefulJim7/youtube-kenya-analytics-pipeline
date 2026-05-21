@@ -248,3 +248,31 @@ fact_video_performance | 250
 ```
 
 `dim_channel` has 9 rows because `Churchill Show` and `Churchill Raw` currently resolve to the same YouTube channel ID. This can be refined later by treating Churchill Raw as a playlist or content category rather than a separate channel.
+
+## Airflow Orchestration
+
+The Airflow DAG is defined at:
+
+```text
+airflow/dags/youtube_kenya_pipeline_dag.py
+```
+
+It orchestrates the existing pipeline steps:
+
+```text
+extract channel stats + extract video metadata
+flatten channel stats + flatten video metadata
+load processed CSVs to PostgreSQL
+dbt run
+dbt test
+```
+
+The DAG uses environment variables so it can run in different environments:
+
+```text
+YOUTUBE_PIPELINE_PROJECT_ROOT=/opt/airflow/project
+YOUTUBE_PIPELINE_PYTHON_BIN=python
+YOUTUBE_PIPELINE_DBT_BIN=dbt
+```
+
+Airflow containerization will be added in a later milestone.
