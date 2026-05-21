@@ -275,4 +275,59 @@ YOUTUBE_PIPELINE_PYTHON_BIN=python
 YOUTUBE_PIPELINE_DBT_BIN=dbt
 ```
 
-Airflow containerization will be added in a later milestone.
+## Run Airflow With Docker
+
+Airflow is included in `docker-compose.yml` using a pinned Airflow 3 image and a project-specific Docker image with the pipeline dependencies already installed.
+
+Start PostgreSQL and Airflow:
+
+```bash
+docker compose up -d --build
+```
+
+Open the Airflow UI:
+
+```text
+http://localhost:8080
+```
+
+Default local login:
+
+```text
+username: admin
+password: admin
+```
+
+Expected DAG:
+
+```text
+youtube_kenya_daily_pipeline
+```
+
+![Successful Airflow DAG run](docs/images/airflow_successful_dag_run.png)
+
+The Airflow services mount the full project into:
+
+```text
+/opt/airflow/project
+```
+
+This lets the DAG run the same ingestion, processing, loading, and dbt commands used locally.
+
+For local debugging, the DAG can reuse stored raw YouTube snapshots instead of calling the YouTube API on every test run:
+
+```env
+YOUTUBE_PIPELINE_USE_EXISTING_RAW=true
+```
+
+If you change `.env` or `docker-compose.yml`, recreate the Airflow container so Docker applies the new environment variables:
+
+```bash
+docker compose up -d --force-recreate airflow
+```
+
+More Airflow troubleshooting notes are in:
+
+```text
+docs/airflow_notes.md
+```

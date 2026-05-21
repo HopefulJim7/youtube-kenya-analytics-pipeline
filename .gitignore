@@ -12,6 +12,7 @@ airflow/logs/
 dbt_youtube_analytics/logs/
 dbt_youtube_analytics/target/
 dbt_youtube_analytics/dbt_packages/
+dbt_youtube_analytics/.user.yml
 
 .ipynb_checkpoints/
 .DS_Store

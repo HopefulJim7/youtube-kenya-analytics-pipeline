@@ -1,3 +1,44 @@
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: docker/airflow/Dockerfile
+  image: youtube-kenya-analytics-airflow:3.2.1
+  environment: &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: ${AIRFLOW_ADMIN_USERNAME:-admin}:admin
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_PASSWORDS_FILE: /opt/airflow/simple_auth_manager_passwords.json
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://localhost:8080/execution/
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-GXEgSOaHETcDWoM0sNrfzHE9p4RfYuBTUrYp-4ctGVA=}
+    AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY:-pcku2s5KfJZhDGSlPoIxuXTo1NIqD0nOyq5t-P1kFsG2M3Br9WOpqnUoDGgXSdjF}
+    AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_API_AUTH_JWT_SECRET:-rIk9NP8x5j0PGeT-qPk8yrRPseZo9DJGnVanWziMYYV7XbC9-zDj_JT3D9LPChIgt5iiJkCY3PWZlYefEUOcIg}
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://youtube_user:youtube_password@postgres:5432/airflow_metadata
+    AIRFLOW_ADMIN_USERNAME: ${AIRFLOW_ADMIN_USERNAME:-admin}
+    AIRFLOW_ADMIN_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-admin}
+    YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+    RAW_BUCKET_NAME: ${RAW_BUCKET_NAME}
+    RAW_STORAGE_BACKEND: ${RAW_STORAGE_BACKEND}
+    RAW_LOCAL_DIR: ${RAW_LOCAL_DIR}
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: youtube_analytics
+    POSTGRES_USER: youtube_user
+    POSTGRES_PASSWORD: youtube_password
+    YOUTUBE_PIPELINE_PROJECT_ROOT: ${YOUTUBE_PIPELINE_PROJECT_ROOT:-/opt/airflow/project}
+    YOUTUBE_PIPELINE_PYTHON_BIN: ${YOUTUBE_PIPELINE_PYTHON_BIN:-python}
+    YOUTUBE_PIPELINE_DBT_BIN: ${YOUTUBE_PIPELINE_DBT_BIN:-dbt}
+    YOUTUBE_PIPELINE_DBT_PROFILES_DIR: ${YOUTUBE_PIPELINE_DBT_PROFILES_DIR:-/opt/airflow/project/dbt_youtube_analytics}
+    YOUTUBE_PIPELINE_USE_EXISTING_RAW: ${YOUTUBE_PIPELINE_USE_EXISTING_RAW:-true}
+    YOUTUBE_PIPELINE_SNAPSHOT_DATE: ${YOUTUBE_PIPELINE_SNAPSHOT_DATE:-}
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./:/opt/airflow/project
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    postgres:
+      condition: service_healthy
+
 services:
   postgres:
     image: postgres:16
@@ -7,14 +48,33 @@ services:
       POSTGRES_USER: youtube_user
       POSTGRES_PASSWORD: youtube_password
     ports:
-      - "5433:5432" #HOST_PORT:CONTAINER_PORT
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U youtube_user -d youtube_analytics"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  airflow:
+    <<: *airflow-common
+    container_name: youtube_analytics_airflow
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db migrate
+        printf '{"%s":"%s"}' "$$AIRFLOW_ADMIN_USERNAME" "$$AIRFLOW_ADMIN_PASSWORD" > /opt/airflow/simple_auth_manager_passwords.json
+        airflow dag-processor &
+        airflow scheduler &
+        exec airflow api-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:

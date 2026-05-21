@@ -1,0 +1,12 @@
+youtube_kenya_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'localhost') }}"
+      port: "{{ env_var('POSTGRES_PORT', '5433') | int }}"
+      user: "{{ env_var('POSTGRES_USER', 'youtube_user') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'youtube_password') }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'youtube_analytics') }}"
+      schema: public
+      threads: 4
