@@ -331,3 +331,58 @@ More Airflow troubleshooting notes are in:
 ```text
 docs/airflow_notes.md
 ```
+
+## Power BI Dashboard
+
+The Power BI dashboard file is stored at:
+
+```text
+dashboards/powerbi/youtube_kenya_analytics_dashboard.pbix
+```
+
+It connects to the local PostgreSQL warehouse and uses the dbt mart views:
+
+```text
+dim_channel
+dim_video
+fact_channel_stats
+fact_video_performance
+```
+
+The dashboard currently includes three portfolio-ready pages:
+
+```text
+Executive Overview
+Channel Size & Efficiency
+Content Performance
+```
+
+### Executive Overview
+
+This page summarizes channel reach and audience interaction. It helps compare which Kenyan YouTube channels have the largest audience base and which channels generate stronger engagement from viewers.
+
+![Executive Overview](dashboards/powerbi/screenshots/executive_overview.png)
+
+### Channel Size & Efficiency
+
+This page compares long-term audience base against content efficiency. Subscriber count shows potential reach, while average views per video shows how effectively each channel turns uploads into audience attention.
+
+![Channel Size & Efficiency](dashboards/powerbi/screenshots/channel_size_efficiency.png)
+
+### Content Performance
+
+This table shows the specific videos driving audience attention. A station can use it for content strategy; NGOs and government teams can use it to identify themes and channels that amplify public messages.
+
+![Content Performance](dashboards/powerbi/screenshots/content_performance.png)
+
+Key dashboard measures:
+
+```text
+Total Views
+Total Likes
+Total Comments
+Engagement Rate
+Total Subscribers
+Video Count
+Average Views per Video
+```
